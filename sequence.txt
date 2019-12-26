@@ -1,0 +1,42 @@
+@startuml
+actor User
+boundary "Browser" as GUI
+boundary "Operation system" as OS
+entity "Internet provider" as Provider
+entity "DNS Server" as DNS
+entity "Web-Server" as Server
+    
+activate User
+    User -> GUI : Enter query
+deactivate User
+activate GUI
+    GUI -> GUI : Check local DNS cache
+activate OS
+    GUI -> OS : Search for IP
+    OS -> OS : Check local DNS cache
+activate Provider
+    OS -> Provider : Search for IP
+    Provider -> Provider : Check local DNS cache
+activate DNS
+    Provider -> DNS : Search for IP
+    DNS -> Provider : Return IP
+deactivate DNS
+    Provider -> Provider : Update local DNS cache
+    Provider -> OS : Return IP
+deactivate Provider
+    OS -> OS : Update local DNS cache
+    OS -> GUI : Return IP
+deactivate OS
+    GUI -> GUI : Update local DNS cache
+    GUI -> GUI : Check local cache for page
+activate Server
+    GUI -> Server : Send HTTP request
+    Server -> GUI : Return HTTP response
+deactivate Server
+GUI -> GUI : Parse response
+GUI -> GUI : Parse HTML
+GUI -> GUI : Run JS & CSS interpretators
+GUI -> GUI : Compile page
+GUI -> User : Show page
+deactivate GUI
+@enduml

@@ -1,0 +1,27 @@
+@startuml
+start
+
+:Browser checks local DNS cache for server IP;
+if (not in cache) then 
+    :OS, provider, root DNS server check local DNS cache for server IP;
+    if (not in cache) then 
+        :request goes further along the chain of DNS servers;
+    else
+        :return focus to browser; 
+        :update caches;
+    endif
+endif    
+:Browser check for page in cache;
+if (is in cache) then 
+    :load page from cache;
+else 
+    :Browser send HTTP request to server;
+    :Server send HTTP response to browser;
+    :Browser get HTTP response and parse it;
+endif
+:Browser parse HTML;
+:Browser run JS & CSS interpreters;
+:Browser compile page;
+
+stop
+@enduml
