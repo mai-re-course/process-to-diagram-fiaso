@@ -1,0 +1,20 @@
+@startuml
+frame PC {
+    URL --> [Browser]
+    Server_IP --> [Browser]
+    [Operation_system] --> Server_IP
+    [Browser] --> Rendered_page
+}
+
+frame Server {
+    [Browser] --> HTTP_request
+    HTTP_response -> [Browser]
+    HTTP_request -> [Server]
+    [Server] --> HTTP_response
+}
+
+frame Net {
+    [Internet_provider] --> Server_IP
+    [DNS_server] --> Server_IP
+}
+@enduml
